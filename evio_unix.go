@@ -307,25 +307,10 @@ func loopUDPRead(s *server, l *loop, lnidx, fd int) error {
 		return nil
 	}
 	if s.events.Data != nil {
-		var sa6 syscall.SockaddrInet6
-		switch sa := sa.(type) {
-		case *syscall.SockaddrInet4:
-			sa6.ZoneId = 0
-			sa6.Port = sa.Port
-			for i := 0; i < 12; i++ {
-				sa6.Addr[i] = 0
-			}
-			sa6.Addr[12] = sa.Addr[0]
-			sa6.Addr[13] = sa.Addr[1]
-			sa6.Addr[14] = sa.Addr[2]
-			sa6.Addr[15] = sa.Addr[3]
-		case *syscall.SockaddrInet6:
-			sa6 = *sa
-		}
 		c := &conn{}
 		c.addrIndex = lnidx
 		c.localAddr = s.lns[lnidx].lnaddr
-		c.remoteAddr = internal.SockaddrToAddr(&sa6)
+		c.remoteAddr = internal.SockaddrToAddr(sa)
 		in := append([]byte{}, l.packet[:n]...)
 		out, action := s.events.Data(c, in)
 		if len(out) > 0 {

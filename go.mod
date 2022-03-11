@@ -1,4 +1,4 @@
-module github.com/tidwall/evio
+module github.com/tianlin/evio
 
 go 1.15
 

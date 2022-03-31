@@ -278,6 +278,7 @@ func loopAccept(s *server, l *loop, fd int) error {
 				}
 			}
 			if ln.pconn != nil {
+				fmt.Println("-- loop udp read --", l.idx)
 				return loopUDPRead(s, l, i, fd)
 			}
 			nfd, sa, err := syscall.Accept(fd)
